@@ -1,24 +1,11 @@
 name: Build libmpv-android
 
+# PT fork (pt-filters): manual runs only, default flavor + acompressor/alimiter, artifacts only (no release).
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      release:
-        description: 'Create draft release'
-        required: false
-        type: boolean
-        default: false
-  pull_request:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -65,11 +52,4 @@ jobs:
         with:
           name: artifact
           path: /home/runner/work/libmpv-android-video-build/libmpv-android-video-build/buildscripts/*.jar
-      - uses: softprops/action-gh-release@v1
-        if: github.ref == 'refs/heads/main' || inputs.release == true
-        with:
-          draft: true
-          prerelease: false
-          tag_name: "vnext"
-          files: |
-            /home/runner/work/libmpv-android-video-build/libmpv-android-video-build/buildscripts/*.jar
+          retention-days: 7
